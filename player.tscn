@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://d2kpusjrn6gqw"]
+[gd_scene load_steps=43 format=3 uid="uid://d2kpusjrn6gqw"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_k73qg"]
 [ext_resource type="Texture2D" uid="uid://dktla8cs2oodw" path="res://Assets/sprites/knight.png" id="2_i3kr0"]
@@ -50,6 +50,10 @@ region = Rect2(64, 0, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_o4wg2"]
 atlas = ExtResource("2_i3kr0")
 region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xoxpq"]
+atlas = ExtResource("2_i3kr0")
+region = Rect2(64, 160, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8tqn8"]
 atlas = ExtResource("2_i3kr0")
@@ -202,6 +206,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_xoxpq")
+}],
+"loop": true,
+"name": &"Jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_8tqn8")
 }, {
 "duration": 1.0,
@@ -287,14 +299,33 @@ animations = [{
 radius = 13.0
 height = 38.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uc6ui"]
+radius = 42.0
+height = 84.0
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_k73qg")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_7o4iw")
-animation = &"Idle"
+animation = &"Jump"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, 17)
 shape = SubResource("CapsuleShape2D_0q3w6")
+
+[node name="JumpTriggerZone" type="Area2D" parent="."]
+visible = false
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpTriggerZone"]
+visible = false
+position = Vector2(-2, 29)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_uc6ui")
+disabled = true
+
+[connection signal="area_entered" from="JumpTriggerZone" to="." method="_on_jump_trigger_zone_area_entered"]
+[connection signal="area_exited" from="JumpTriggerZone" to="." method="_on_jump_trigger_zone_area_exited"]
