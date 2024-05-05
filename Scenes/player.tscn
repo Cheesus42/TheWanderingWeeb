@@ -296,12 +296,11 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0q3w6"]
-radius = 13.0
+radius = 16.0
 height = 38.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uc6ui"]
-radius = 42.0
-height = 84.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_18un7"]
+radius = 15.0
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_k73qg")
@@ -315,17 +314,16 @@ animation = &"Jump"
 position = Vector2(1, 17)
 shape = SubResource("CapsuleShape2D_0q3w6")
 
-[node name="JumpTriggerZone" type="Area2D" parent="."]
-visible = false
-collision_layer = 2
-collision_mask = 2
+[node name="Camera2D" type="Camera2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpTriggerZone"]
-visible = false
-position = Vector2(-2, 29)
+[node name="jumpRoom" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="jumpRoom"]
+light_mask = 2
+visibility_layer = 2
+position = Vector2(0, 30)
 rotation = 1.5708
-shape = SubResource("CapsuleShape2D_uc6ui")
-disabled = true
+shape = SubResource("CapsuleShape2D_18un7")
 
-[connection signal="area_entered" from="JumpTriggerZone" to="." method="_on_jump_trigger_zone_area_entered"]
-[connection signal="area_exited" from="JumpTriggerZone" to="." method="_on_jump_trigger_zone_area_exited"]
+[connection signal="body_entered" from="jumpRoom" to="." method="_on_jump_room_body_entered"]
+[connection signal="body_exited" from="jumpRoom" to="." method="_on_jump_room_body_exited"]
